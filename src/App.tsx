@@ -13,6 +13,7 @@ import Pricing from './templates/pricing/Pricing';
 import SignInSide from './templates/sign-in-side/SignInSide';
 import SignUp from './templates/sign-up/SignUp';
 import StickyFooter from './templates/sticky-footer/StickyFooter';
+
 import Blog from './views/blog/Blog';
 
 function App() {
