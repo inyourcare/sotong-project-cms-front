@@ -1,24 +1,29 @@
 import {
     Link
 } from "react-router-dom";
-import MLink from '@mui/material/Link';
-import { Stack } from "@mui/material";
+import { Button } from "@mui/material";
+import React from "react";
 
 function HomeContent() {
 
+    const [state, setState] = React.useState({
+        apiHost: "http://localhost:8080/",
+    });
+    const callAPI = (apiName: string) => {
+        fetch(state.apiHost+apiName)
+            // .then(response => response.json())
+            // .then(data => console.log(data));
+    }
+
     return (
         <div>
-            <MLink
-                display="block"
-                variant="body1"
-                href="#"
-                key="test1"
-                sx={{ mb: 0.5 }}
+            <Button
+                variant="contained"
+                onClick={() => callAPI("test")}
+                sx={{ mt: 3, ml: 1 }}
             >
-                <Stack direction="row" spacing={1} alignItems="center">
-                    <span>{"testCall"}</span>
-                </Stack>
-            </MLink>
+                {"testCall"}
+            </Button>
             <ul>
                 <li>
                     <Link to="/">Home</Link>
