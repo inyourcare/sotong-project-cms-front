@@ -1,16 +1,29 @@
 import {
     Link
 } from "react-router-dom";
+import MLink from '@mui/material/Link';
+import { Stack } from "@mui/material";
 
 function HomeContent() {
 
     return (
         <div>
+            <MLink
+                display="block"
+                variant="body1"
+                href="#"
+                key="test1"
+                sx={{ mb: 0.5 }}
+            >
+                <Stack direction="row" spacing={1} alignItems="center">
+                    <span>{"testCall"}</span>
+                </Stack>
+            </MLink>
             <ul>
                 <li>
                     <Link to="/">Home</Link>
                 </li>
-                <li>
+                {/* <li>
                     <Link to="/dash">Dashboard</Link>
                 </li>
                 <li>
@@ -36,7 +49,7 @@ function HomeContent() {
                 </li>
                 <li>
                     <Link to="/stickyFooter">StickyFooter</Link>
-                </li>
+                </li> */}
             </ul>
         </div>
     )
