@@ -9,14 +9,15 @@ function HomeContent() {
     const [state, setState] = React.useState({
         prefix: "home_textfield_",
         apiHost: "http://localhost:8080/",
-        tableName: "",
+        // datasourceType: "amazon-maria-datasource",
+        // datasourceType: "sotong-maria-datasource",
+        // databaseName: "cms_test",
+        // tableName: "TEST_TABLE",
         columns: "",
-        databaseName: "cms_test",
     });
     const callAPI = (apiName: string, params?: {}) => {
-        console.log(apiName, '/', params)
+        console.log(state.apiHost + apiName, '/', params)
         if (params) {
-            console.log('if', JSON.stringify(params))
             fetch(state.apiHost + apiName, {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' },
@@ -25,7 +26,6 @@ function HomeContent() {
                 .then(response => response.json())
                 .then(data => console.log(data));
         } else {
-            console.log('else')
             fetch(state.apiHost + apiName)
                 .then(response => response.json())
                 .then(data => console.log(data));
@@ -48,7 +48,7 @@ function HomeContent() {
                 // aria-label="maximum height"
                 // placeholder="Maximum 4 rows"
                 defaultValue=
-                {"-For Test-"+
+                {"-For Test-\n"+
                 "TEST_TABLE \n"
                 +"NAME VARCHAR(255),AGE INT,HEIGHT INT\n"
                 +"test"}
@@ -56,7 +56,7 @@ function HomeContent() {
             />
             <Button
                 variant="contained"
-                onClick={() => callAPI("test")}
+                onClick={() => callAPI("test",state)}
                 // sx={{ mt: 3, ml: 1 }}
             >
                 {"testCall"}
@@ -66,10 +66,27 @@ function HomeContent() {
             <TextField id={state.prefix + "columns"} label="Columns => ex) NAME VARCHAR(255),AGE INT,HEIGHT INT" variant="filled" onChange={(e: React.ChangeEvent<HTMLTextAreaElement>) => handleTextFieldChange(e)} />
             <Button
                 variant="contained"
-                onClick={(e) => callAPI("createTable", state)}
+                // onClick={(e) => callAPI("addNewBoard", state)}
+                onClick={(e) => callAPI("admin/addNewBoard", 
+                {
+                    boardName:"newName2",boardType:"NORMAL",boardSkinType:"NORMAL",ableToReply:"Y"
+                    ,allowFileAttach:"Y",allowUnknown:"Y",allowUnknownReply:"Y",commentable:"Y",enable:"Y"
+                    ,onlyAdmin:"Y"
+                })}
                 // sx={{ mt: 3, ml: 1 }}
             >
-                {"createTable"}
+                {"addNewBoard"}
+            </Button>
+            <Button
+                variant="contained"
+                // onClick={(e) => callAPI("addNewBoard", state)}
+                onClick={(e) => callAPI("auth/signIn", 
+                {
+                    signInId: "admin", password: "pass12#$"
+                })}
+                // sx={{ mt: 3, ml: 1 }}
+            >
+                {"signIn"}
             </Button>
             <ul>
                 <li>
