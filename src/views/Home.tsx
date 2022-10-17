@@ -13,19 +13,49 @@ function HomeContent() {
         // datasourceType: "sotong-maria-datasource",
         // databaseName: "cms_test",
         // tableName: "TEST_TABLE",
-        columns: "",
+        // columns: "",
+        // jwt: "",
+        accessToken: "",
+        refreshToken: "",
+        grantType: ""
     });
     const callAPI = (apiName: string, params?: {}) => {
-        console.log(state.apiHost + apiName, '/', params)
+        const auth = 'Bearer ' + state.accessToken
+        const header = { 
+            'Content-Type': 'application/json',
+            'Authorization': auth,
+            // credentials: 'include',
+            'Access-Control-Expose-Headers': '*',
+            // 'Access-Control-Allow-Origin': '*',
+        }
+        console.log('callAPI',state,header)
         if (params) {
+            console.log('POST call:: ',state.apiHost + apiName, params,header)
             fetch(state.apiHost + apiName, {
                 method: 'POST',
-                headers: { 'Content-Type': 'application/json' },
+                headers: header,
                 body: JSON.stringify(params)
             })
-                .then(response => response.json())
-                .then(data => console.log(data));
+                .then(response => {
+                    console.log(response)
+                    return response.json()
+                })
+                .then(data => {
+                    console.log(data)
+                    setState({
+                        ...state,
+                        ...data
+                    });
+                    // if (data.result){
+                    //     setState({
+                    //         ...state,
+                    //         ...data.result
+                    //     });
+                    // }
+                })
+                .then(()=>{console.log('[state]' , state)})
         } else {
+            console.log('GET call:: ',state.apiHost + apiName, '/', params)
             fetch(state.apiHost + apiName)
                 .then(response => response.json())
                 .then(data => console.log(data));
@@ -56,20 +86,29 @@ function HomeContent() {
             />
             <Button
                 variant="contained"
-                onClick={() => callAPI("test",state)}
+                // onClick={() => callAPI("test",state)}
+                onClick={() => callAPI("rest/test/get",0)}
                 // sx={{ mt: 3, ml: 1 }}
             >
                 {"testCall"}
+            </Button>
+            <Button
+                variant="contained"
+                // onClick={() => callAPI("test",state)}
+                onClick={() => callAPI("rest/test/post",{test: true})}
+                // sx={{ mt: 3, ml: 1 }}
+            >
+                {"testPost"}
             </Button>
             <br />
             <TextField id={state.prefix + "tableName"} label="Table Name" variant="filled" onChange={(e: React.ChangeEvent<HTMLTextAreaElement>) => handleTextFieldChange(e)} />
             <TextField id={state.prefix + "columns"} label="Columns => ex) NAME VARCHAR(255),AGE INT,HEIGHT INT" variant="filled" onChange={(e: React.ChangeEvent<HTMLTextAreaElement>) => handleTextFieldChange(e)} />
             <Button
-                variant="contained"
+                variant="outlined"
                 // onClick={(e) => callAPI("addNewBoard", state)}
                 onClick={(e) => callAPI("admin/addNewBoard", 
                 {
-                    boardName:"newName2",boardType:"NORMAL",boardSkinType:"NORMAL",ableToReply:"Y"
+                    boardName:"newName3",boardType:"NORMAL",boardSkinType:"NORMAL",ableToReply:"Y"
                     ,allowFileAttach:"Y",allowUnknown:"Y",allowUnknownReply:"Y",commentable:"Y",enable:"Y"
                     ,onlyAdmin:"Y"
                 })}
@@ -78,15 +117,22 @@ function HomeContent() {
                 {"addNewBoard"}
             </Button>
             <Button
-                variant="contained"
-                // onClick={(e) => callAPI("addNewBoard", state)}
-                onClick={(e) => callAPI("auth/signIn", 
+                variant="outlined"
+                onClick={(e) => callAPI("rest/common/auth/signIn", 
                 {
                     signInId: "admin", password: "pass12#$"
                 })}
-                // sx={{ mt: 3, ml: 1 }}
             >
                 {"signIn"}
+            </Button>
+            <Button
+                variant="outlined"
+                onClick={(e) => callAPI("auth/signIn", 
+                {
+                    signInId: "normalUser1", password: "pass12#$"
+                })}
+            >
+                {"signIn As User"}
             </Button>
             <ul>
                 <li>
