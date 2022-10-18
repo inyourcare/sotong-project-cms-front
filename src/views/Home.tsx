@@ -54,6 +54,10 @@ function HomeContent() {
                     // }
                 })
                 .then(()=>{console.log('[state]' , state)})
+                .catch((e)=>{
+                    console.log('error->',e)
+                })
+
         } else {
             console.log('GET call:: ',state.apiHost + apiName, '/', params)
             fetch(state.apiHost + apiName)
@@ -99,6 +103,18 @@ function HomeContent() {
                 // sx={{ mt: 3, ml: 1 }}
             >
                 {"testPost"}
+            </Button>
+            <Button
+                variant="contained"
+                // onClick={() => callAPI("test",state)}
+                onClick={() => callAPI("rest/common/auth/reissue"
+                ,{
+                    accessToken: state.accessToken,
+                    refreshToken: state.refreshToken
+                })}
+                // sx={{ mt: 3, ml: 1 }}
+            >
+                {"refreshToken"}
             </Button>
             <br />
             <TextField id={state.prefix + "tableName"} label="Table Name" variant="filled" onChange={(e: React.ChangeEvent<HTMLTextAreaElement>) => handleTextFieldChange(e)} />
