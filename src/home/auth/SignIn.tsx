@@ -2,7 +2,7 @@ import { Button, Checkbox, Container, CssBaseline, FormControlLabel, Grid, Typog
 import React, { useState } from 'react';
 import { useStyles } from '../../App';
 function SignInContent() {
-    const [mainText, setMainText] = useState(
+    const [mainText] = useState(
         // "8명까지 함께 그룹 영상통화해요 ⚡️ 시간 제한 없이 무료로 즐기세요"
         "그룹영상통화 스무디"
     );

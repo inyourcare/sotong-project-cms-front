@@ -1,12 +1,11 @@
 // import { Button } from '@mui/material';
-import React from 'react';
 import {
   Routes,
   Route,
 } from "react-router-dom";
 import Home from './home/Home';
 import { Link, Typography } from '@mui/material';
-import { createTheme, Theme, ThemeProvider } from '@mui/material/styles';
+import { createTheme, ThemeProvider } from '@mui/material/styles';
 import { green, purple } from '@mui/material/colors';
 import { makeStyles } from '@mui/styles';
 
