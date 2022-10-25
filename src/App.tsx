@@ -4,9 +4,10 @@ import {
   Routes,
   Route,
 } from "react-router-dom";
-import Home from './views/Home';
+import Test from './views/Test';
 
 import Blog from './views/blog/Blog';
+import Home from './home/Home';
 
 function App() {
   return (
@@ -20,8 +21,8 @@ function App() {
     //   <SignIn />
     // </div>
     <Routes>
-      <Route path="/" element={<Home />} />
-      <Route path="/blog" element={<Blog />} />
+      {/* <Route path="/" element={<Test />} />
+      <Route path="/blog" element={<Blog />} /> */}
       {/* <Route path="/dash" element={<Dashboard />} />
       <Route path="/signIn" element={<SignIn />} />
       <Route path="/album" element={<Album />} />
@@ -30,6 +31,7 @@ function App() {
       <Route path="/signInSide" element={<SignInSide />} />
       <Route path="/signUp" element={<SignUp />} />
       <Route path="/stickyFooter" element={<StickyFooter />} /> */}
+      <Route path="/" element={<Home />} />
     </Routes>
   );
 }

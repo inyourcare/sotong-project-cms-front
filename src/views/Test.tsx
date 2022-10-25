@@ -4,7 +4,7 @@ import {
 import { Button, TextareaAutosize, TextField } from "@mui/material";
 import React from "react";
 
-function HomeContent() {
+function TestContent() {
 
     const [state, setState] = React.useState({
         prefix: "home_textfield_",
@@ -154,6 +154,9 @@ function HomeContent() {
                 <li>
                     <Link to="/">Home</Link>
                 </li>
+                <li>
+                    <Link to="/blog">Blog</Link>
+                </li>
                 {/* <li>
                     <Link to="/dash">Dashboard</Link>
                 </li>
@@ -162,9 +165,6 @@ function HomeContent() {
                 </li>
                 <li>
                     <Link to="/album">Album</Link>
-                </li>
-                <li>
-                    <Link to="/blog">Blog</Link>
                 </li>
                 <li>
                     <Link to="/checkout">Checkout</Link>
@@ -185,6 +185,6 @@ function HomeContent() {
         </div>
     )
 }
-export default function Home() {
-    return <HomeContent />;
+export default function Test() {
+    return <TestContent />;
 }
