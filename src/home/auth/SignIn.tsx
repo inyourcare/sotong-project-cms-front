@@ -1,7 +1,15 @@
 import { Button, Checkbox, Container, CssBaseline, FormControlLabel, Grid, Typography } from '@mui/material';
 import React, { useState } from 'react';
 import { useStyles } from '../../App';
+import { useTranslation } from 'react-i18next'
+import i18n from "i18next";
+
 function SignInContent() {
+    const { t }  = useTranslation(['page'])
+    const onChangeLang = () => {
+        i18n.changeLanguage('ko')
+    }
+
     const [mainText] = useState(
         // "8명까지 함께 그룹 영상통화해요 ⚡️ 시간 제한 없이 무료로 즐기세요"
         "그룹영상통화 스무디"
@@ -60,7 +68,8 @@ function SignInContent() {
                                 // fullWidth
                                 variant="contained"
                                 color="primary"
-                                onClick={() => { }}
+                                onClick={() => {alert(t('page:test')) }}
+                                value={t('page:test')}
                             >
                                 로그인
                             </Button>
