@@ -5,7 +5,7 @@ import { useTranslation } from 'react-i18next'
 import i18n from "i18next";
 
 function SignInContent() {
-    const { t }  = useTranslation(['page'])
+    const { t } = useTranslation(['page'])
     const onChangeLang = () => {
         i18n.changeLanguage('ko')
     }
@@ -16,6 +16,8 @@ function SignInContent() {
     );
     const [subText] = useState("8명까지 시간제한없이 무료로! 지금 바로 웹에서 만나보세요");
     const [remeberMeCheck, setRememberMeCheck] = useState(false);
+    const [userId, setUserId] = useState("");
+    const [userPass, setUserPass] = useState("");
 
     function checkboxOnChange(
         event: React.ChangeEvent<HTMLInputElement>,
@@ -24,8 +26,25 @@ function SignInContent() {
         setRememberMeCheck(checked);
     }
 
+    const onChange = (e: React.ChangeEvent<HTMLInputElement>, valueSetter: Function, validationFunc?: Function) => {
+        const value = e.target.value;
+        if (validationFunc && validationFunc(value)) {
+            valueSetter(value);
+        } else {
+            valueSetter(value);
+        }
+    };
+
+    const onSubmit = (e: React.FormEvent<HTMLFormElement>, functionCall: Function) => {
+        e.preventDefault();
+        e.currentTarget.setAttribute('disabled', '')
+        functionCall();
+        e.currentTarget.removeAttribute('disabled')
+    };
+
     // const theme = useTheme();
     const classes = useStyles();
+    const i18nTestWord = t('page:test');
     return (<>
         <Grid container component="main" className={`${classes.height100vh}`}>
             <Grid item xs={false} sm={4} md={7} className={`${classes.signIn_sideImage}`} />
@@ -63,16 +82,28 @@ function SignInContent() {
                                 }
                                 label="Remember me"
                             />
-                            <Button
-                                // type="submit"
-                                // fullWidth
-                                variant="contained"
-                                color="primary"
-                                onClick={() => {alert(t('page:test')) }}
-                                value={t('page:test')}
-                            >
-                                로그인
-                            </Button>
+                            <form onSubmit={(e)=>onSubmit(e,()=>{setUserId('');setUserPass('')})}>
+                                <input
+                                    placeholder={"enter your id"}
+                                    onChange={(e) => onChange(e, setUserId)}
+                                    value={userId}
+                                />
+                                <input
+                                    placeholder={"enter your password"}
+                                    onChange={(e) => onChange(e, setUserPass)}
+                                    value={userPass}
+                                />
+
+                                <Button
+                                    type="submit"
+                                    variant="contained"
+                                    color="primary"
+                                    // onClick={() => { alert(t('page:test')) }}
+                                    className={`${classes.signIn_Btn} ${classes.width100P}`}
+                                >
+                                    {i18nTestWord}
+                                </Button>
+                            </form>
                         </div>
                     </div>
                 </Container>

@@ -47,6 +47,9 @@ export const useStyles = makeStyles(() => ({
     backgroundSize: "cover",
     backgroundPosition: "center",
   },
+  signIn_Btn: {
+    margin: theme.spacing(0, 0, 1),
+  }
 }));
 
 export function Copyright() {
