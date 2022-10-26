@@ -1,3 +1,4 @@
+import axios from 'axios';
 
 // const auth = 'Bearer ' + state.accessToken
 const header = {
@@ -17,28 +18,46 @@ export type GetAccessTokenParam = {
     userId: string,
     password: string
 }
-export const getAccessToken = (param: GetAccessTokenParam):any => {
+export const getAccessToken = (param: GetAccessTokenParam): any => {
     const apiName = "rest/common/auth/signIn"
-    console.log('getAccessToken param::',param)
+    console.log('getAccessToken param::', param)
     if (param.userId && param.password) {
         const params = { signInId: param.userId, password: param.password }
-        return fetch(apiHost + apiName, {
-            method: 'POST',
+        return axios({
+            method: 'post',
+            url: apiHost + apiName,
             headers: header,
-            body: JSON.stringify(params)
+            data: JSON.stringify(params)
         })
             .then(response => {
-                console.log('getAccessToken response::',response)
-                if (response.ok)
-                    return response.json()
-                else
-                 throw Error('response not ok')
+                console.log('getAccessToken response::', response)
+                return response.data
             })
             .catch((e) => {
-                console.log('getAccessToken error::',e)
+                console.log('getAccessToken error::', e)
                 throw e;
                 // return e;
             })
     }
+    // if (param.userId && param.password) {
+    //     const params = { signInId: param.userId, password: param.password }
+    //     return fetch(apiHost + apiName, {
+    //         method: 'POST',
+    //         headers: header,
+    //         body: JSON.stringify(params)
+    //     })
+    //         .then(response => {
+    //             console.log('getAccessToken response::', response)
+    //             if (response.ok)
+    //                 return response.json()
+    //             else
+    //                 throw Error('response not ok')
+    //         })
+    //         .catch((e) => {
+    //             console.log('getAccessToken error::', e)
+    //             throw e;
+    //             // return e;
+    //         })
+    // }
     throw Error('getAccessToken param is not valid')
 }
