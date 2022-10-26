@@ -2,6 +2,7 @@ import { createAction, createAsyncAction, ActionType, createReducer } from "type
 import { takeEvery, put } from "redux-saga/effects";
 import createAsyncSaga, { createAsyncReducer, transformToArray } from "../util/reducerUtils";
 import { getAccessToken, GetAccessTokenParam } from "../../logics/auth";
+import { Buffer } from 'buffer';
 
 
 ////////////////////////////////////////////////////////////action
@@ -23,26 +24,38 @@ export const signOutAction = createAction(SIGN_OUT_ACTION)<string | null>();
 
 // set tokens
 export const SET_TOKENS_ACTON = "app/SET_TOKENS_ACTON";
-export const setTokensAction = createAction(SET_TOKENS_ACTON)<SetTokensActionParam>();
+export const setTokenInfoAction = createAction(SET_TOKENS_ACTON)<SetTokensActionParam>();
 
 
 ////////////////////////////////////////////////////////////type
-const actions = { createAsyncAction, signOutAction, setTokensAction };
+const actions = { createAsyncAction, signOutAction, setTokensAction: setTokenInfoAction };
 export type AppAction = ActionType<typeof actions>
 export type AppState = {
     signInAsyncAction: any,
     accessToken: string,
-    refreshToken: string
+    refreshToken: string,
+    userInfoFromToken: UserInfoFromToken
 }
 // action params
 export type SetTokensActionParam = {
     accessToken: string,
     refreshToken: string,
+    userInfoFromToken: UserInfoFromToken
 }
 export type SignInSuccessResult = {
     accessToken: string,
     grantType: string,
     refreshToken: string
+}
+export type UserInfoFromToken = {
+    auth: AUTH_ROLE,
+    exp: number,
+    iat: number,
+    sub: string
+} | null
+const enum AUTH_ROLE {
+    ADMIN = 'ROLE_ADMIN',
+    USER = 'ROLE_USER',
 }
 
 ////////////////////////////////////////////////////////////reducer
@@ -50,6 +63,7 @@ const initialState: AppState = {
     signInAsyncAction: null,
     accessToken: "",
     refreshToken: "",
+    userInfoFromToken: null
 };
 
 const app = createReducer<AppState, AppAction>(initialState)
@@ -57,8 +71,13 @@ const app = createReducer<AppState, AppAction>(initialState)
         transformToArray(signInAsyncAction),
         createAsyncReducer(signInAsyncAction, "signInAsyncAction")
     )
-    .handleAction(setTokensAction, (state, action) => {
-        return { ...state, accessToken: action.payload.accessToken, refreshToken: action.payload.refreshToken }
+    .handleAction(setTokenInfoAction, (state, action) => {
+        return {
+            ...state,
+            accessToken: action.payload.accessToken,
+            refreshToken: action.payload.refreshToken,
+            userInfoFromToken: action.payload.userInfoFromToken
+        }
     })
 
 
@@ -74,7 +93,16 @@ export function* appSaga() {
 function* signInSuccessSaga(action: ReturnType<typeof signInAsyncAction.success>) {
     console.log('signInSuccessSaga action::', action)
     const result = action.payload as SignInSuccessResult;
-    yield put(setTokensAction({ accessToken: result.grantType + ' ' + result.accessToken, refreshToken: result.grantType + ' ' + result.refreshToken }))
+    const token = result.accessToken;
+    const base64Payload = token.split('.')[1]; //value 0 -> header, 1 -> payload, 2 -> VERIFY SIGNATURE
+    const payload = Buffer.from(base64Payload, 'base64');
+    const userInfo: UserInfoFromToken = JSON.parse(payload.toString());
+    console.log('jwt infos::', userInfo);
+    yield put(setTokenInfoAction({
+        accessToken: result.grantType + ' ' + result.accessToken,
+        refreshToken: result.grantType + ' ' + result.refreshToken,
+        userInfoFromToken: userInfo
+    }))
 }
 
 export default app;
