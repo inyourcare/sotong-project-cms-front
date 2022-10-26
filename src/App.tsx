@@ -8,8 +8,6 @@ import { Link, Typography } from '@mui/material';
 import { createTheme, ThemeProvider } from '@mui/material/styles';
 import { green, purple } from '@mui/material/colors';
 import { makeStyles } from '@mui/styles';
-import { configureStore } from '@reduxjs/toolkit'
-import rootReducer from './redux'
 
 
 // global theme
@@ -90,9 +88,6 @@ export const MuiVariables:IMuiVariables = {
     }
   }
 }
-
-// Redux store
-const store = configureStore({ reducer: rootReducer })
 
 function App() {
   return (

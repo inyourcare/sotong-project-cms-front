@@ -1,5 +1,7 @@
 import { createAction, createAsyncAction, ActionType, createReducer } from "typesafe-actions";
-import { takeEvery } from "redux-saga/effects";
+import { takeEvery, call } from "redux-saga/effects";
+import createAsyncSaga, { createAsyncReducer, transformToArray } from "../util/reducerUtils";
+import { getAccessToken, GetAccessTokenParam } from "../../logics/auth";
 
 
 ////////////////////////////////////////////////////////////action
@@ -13,39 +15,42 @@ export const signInAsyncAction = createAsyncAction(
     SIGN_IN_SUCCESS_ACTION,
     SIGN_IN_ERROR_ACTION
     // result types
-)<string, string, Error>();
+)<GetAccessTokenParam, Object, Error>();
 
 // sign out
 export const SIGN_OUT_ACTION = "app/SIGN_OUT";
-export const signOutAction = createAction(SIGN_OUT_ACTION)<string|null>();
+export const signOutAction = createAction(SIGN_OUT_ACTION)<string | null>();
 
 
 ////////////////////////////////////////////////////////////type
-const actions = { createAsyncAction, signOutAction};
+const actions = { createAsyncAction, signOutAction };
 export type AppAction = ActionType<typeof actions>
 export type AppState = {
-    accessToken: string,
-    refreshToken: string,
+    signInAsyncAction: any,
 }
 
 ////////////////////////////////////////////////////////////reducer
 const initialState: AppState = {
-    accessToken:"",
-    refreshToken:"",
+    signInAsyncAction: null,
 };
 
 const app = createReducer<AppState, AppAction>(initialState)
+    .handleAction(
+        transformToArray(signInAsyncAction),
+        createAsyncReducer(signInAsyncAction, "signInAsyncAction")
+    )
 
 
 ////////////////////////////////////////////////////////////saga
 export function* appSaga() {
-    yield takeEvery(SIGN_IN_ACTION, signInSaga);
-    yield takeEvery(SIGN_OUT_ACTION, signOutSaga);
+    yield takeEvery(SIGN_IN_ACTION,createAsyncSaga(signInAsyncAction,getAccessToken));
+    // yield takeEvery(SIGN_OUT_ACTION, signOutSaga);
 }
 
-function* signInSaga(action: ReturnType<typeof signInAsyncAction.request>) {
-}
-function* signOutSaga(action: ReturnType<typeof signOutAction>) {
-}
+// function* signInSaga(action: ReturnType<typeof signInAsyncAction.request>) {
+//     yield call(getAccessToken , action.payload)
+// }
+// function* signOutSaga(action: ReturnType<typeof signOutAction>) {
+// }
 
 export default app;

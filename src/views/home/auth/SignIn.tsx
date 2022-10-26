@@ -2,6 +2,9 @@ import { Button, Checkbox, Container, CssBaseline, FormControlLabel, Grid, TextF
 import React, { useState } from 'react';
 import { MuiVariables, useStyles } from '../../../App';
 import { useTranslation } from 'react-i18next'
+import { useDispatch, useSelector } from "react-redux";
+import { RootState } from '../../../redux';
+import { signInAsyncAction, SIGN_IN_ACTION } from '../../../redux/reducers/app-reducer';
 
 function SignInContent() {
     const { t } = useTranslation(['page'])
@@ -37,6 +40,10 @@ function SignInContent() {
 
     // const theme = useTheme();
     const classes = useStyles();
+    const dispatch = useDispatch();
+    // const { accessToken, refreshToken } = useSelector(
+    //     (state: RootState) => state.app
+    // );
     const mainText = t('page:signIn_mainText');
     const subText = t('page:signIn_subText');
     const loginBtnText = t('page:signIn_login_btnText');
@@ -71,7 +78,8 @@ function SignInContent() {
                             {subText}
                         </Typography>
                         <div className={`${classes.marginTop3} ${classes.width100P} ${classes.alignCenterBasic}`}>
-                            <form onSubmit={(e) => onSubmit(e, () => { setUserId(''); setUserPass('') })}>
+                            {/* <form onSubmit={(e) => onSubmit(e, () => { dispatch({ type: SIGN_IN_ACTION, payload: { userId, password:userPass } }); setUserId(''); setUserPass(''); })}> */}
+                            <form onSubmit={(e) => onSubmit(e, () => { dispatch(signInAsyncAction.request({ userId, password:userPass })); setUserId(''); setUserPass(''); })}>
                                 <TextField
                                     autoFocus
                                     required
