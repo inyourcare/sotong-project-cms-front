@@ -40,8 +40,13 @@ function SignInContent() {
     const mainText = t('page:signIn_mainText');
     const subText = t('page:signIn_subText');
     const loginBtnText = t('page:signIn_login_btnText');
-    const idInputLabel = "아이디를 입력하세요";
-    const idInputHelperText = "올바른 아이디입니다.";
+    const idInputLabel = t('page:signIn_idInputLabel');
+    const idInputPlaceholder = t('page:signIn_idInputPlaceholder');
+    const idInputHelperText = t('page:signIn_idInputHelperText');
+    const passwordInputLabel = t('page:signIn_passwordInputLabel');
+    const passwordInputPlaceholder = t('page:signIn_passwordInputPlaceholder');
+    const passwordInputHelperText = t('page:signIn_passwordInputHelperText');
+    const rememberMeText = t('page:signIn_rememberMeText');
     return (<>
         <Grid container component="main" className={`${classes.height100vh}`}>
             <Grid item xs={false} sm={4} md={7} className={`${classes.signIn_sideImage}`} />
@@ -74,7 +79,7 @@ function SignInContent() {
                                     label={idInputLabel}
                                     helperText={idInputHelperText}
                                     variant={MuiVariables.TextField.variant.outlined}
-                                    placeholder={"enter your id"}
+                                    placeholder={idInputPlaceholder}
                                     onChange={(e) => onChange(e, setUserId)}
                                     className={`${classes.width100P}`}
                                     // error={!(chatlinkValid && !getChatlinkState.error)}
@@ -83,10 +88,10 @@ function SignInContent() {
                                 <TextField
                                     autoFocus
                                     required
-                                    label="비밀번호를 입력하세요"
-                                    helperText="올바른 비밀번호입니다."
-                                    variant="outlined"
-                                    placeholder={"enter your password"}
+                                    label={passwordInputLabel}
+                                    helperText={passwordInputHelperText}
+                                    variant={MuiVariables.TextField.variant.outlined}
+                                    placeholder={passwordInputPlaceholder}
                                     onChange={(e) => onChange(e, setUserPass)}
                                     className={`${classes.width100P}`}
                                     // error={!(chatlinkValid && !getChatlinkState.error)}
@@ -102,7 +107,7 @@ function SignInContent() {
                                             onChange={(e, checked) => checkboxOnChange(e, checked)}
                                         />
                                     }
-                                    label="Remember me"
+                                    label={rememberMeText}
                                 />
 
                                 <Button
