@@ -8,7 +8,11 @@ import { Link, Typography } from '@mui/material';
 import { createTheme, ThemeProvider } from '@mui/material/styles';
 import { green, purple } from '@mui/material/colors';
 import { makeStyles } from '@mui/styles';
+import { configureStore } from '@reduxjs/toolkit'
+import rootReducer from './redux'
 
+
+// global theme
 const theme = createTheme({
   palette: {
     primary: {
@@ -20,6 +24,7 @@ const theme = createTheme({
   },
 });
 
+// global style classes
 export const useStyles = makeStyles(() => ({
   // common
   alignCenterBasic: {
@@ -52,6 +57,7 @@ export const useStyles = makeStyles(() => ({
   }
 }));
 
+// global function (layout fragment)
 export function Copyright() {
   return (
     <Typography variant="body2" color="text.secondary">
@@ -65,6 +71,7 @@ export function Copyright() {
   );
 }
 
+// global variable
 interface IMuiVariables {
   TextField:{
     variant:{
@@ -83,6 +90,10 @@ export const MuiVariables:IMuiVariables = {
     }
   }
 }
+
+// Redux store
+const store = configureStore({ reducer: rootReducer })
+
 function App() {
   return (
     <ThemeProvider theme={theme}>
