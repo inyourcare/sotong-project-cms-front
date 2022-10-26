@@ -64,6 +64,25 @@ export function Copyright() {
     </Typography>
   );
 }
+
+interface IMuiVariables {
+  TextField:{
+    variant:{
+      outlined: "filled" | "outlined" | "standard" | undefined ,
+      standard: "filled" | "outlined" | "standard" | undefined ,
+      filled: "filled" | "outlined" | "standard" | undefined 
+    }
+  }
+}
+export const MuiVariables:IMuiVariables = {
+  TextField: {
+    variant:  {
+      outlined: "outlined",
+      standard: "standard",
+      filled: "filled"
+    }
+  }
+}
 function App() {
   return (
     <ThemeProvider theme={theme}>
