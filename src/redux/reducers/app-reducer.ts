@@ -2,8 +2,8 @@ import { createAction, createAsyncAction, ActionType, createReducer } from "type
 import { takeEvery, put } from "redux-saga/effects";
 import createAsyncSaga, { createAsyncReducer, transformToArray } from "../util/reducerUtils";
 import { getAccessToken, GetAccessTokenParam, reIssueTokens, ReIssueTokensaram } from "../../logics/auth";
-import { Buffer } from 'buffer';
 import { setRefreshToken } from "../../cookie/cookie";
+import { getInfoFromToken, InfoFromToken } from "../../util/appUtils";
 
 
 ////////////////////////////////////////////////////////////action
@@ -49,29 +49,19 @@ export type AppState = {
     accessToken: string,
     refreshToken: string,
     grantType: string,
-    userInfoFromToken: UserInfoFromToken,
+    userInfoFromToken: InfoFromToken,
 }
 // action params
 export type SetTokensActionParam = {
     accessToken: string,
     refreshToken: string,
     grantType: string,
-    userInfoFromToken: UserInfoFromToken
+    userInfoFromToken: InfoFromToken 
 }
 export type TokenIssuedSuccessfullyResult = {
     accessToken: string,
     grantType: string,
     refreshToken: string
-}
-export type UserInfoFromToken = {
-    auth: AUTH_ROLE,
-    exp: number,
-    iat: number,
-    sub: string
-} | null
-const enum AUTH_ROLE {
-    ADMIN = 'ROLE_ADMIN',
-    USER = 'ROLE_USER',
 }
 
 ////////////////////////////////////////////////////////////reducer
@@ -121,9 +111,9 @@ export function* appSaga() {
 function processAfterTokenIssued(result: TokenIssuedSuccessfullyResult) {
     // const result = action.payload as TokenIssuedSuccessfullyResult;
     const token = result.accessToken;
-    const base64Payload = token.split('.')[1]; //value 0 -> header, 1 -> payload, 2 -> VERIFY SIGNATURE
-    const payload = Buffer.from(base64Payload, 'base64');
-    const userInfo: UserInfoFromToken = JSON.parse(payload.toString());
+    // const base64Payload = token.split('.')[1]; //value 0 -> header, 1 -> payload, 2 -> VERIFY SIGNATURE
+    // const payload = Buffer.from(base64Payload, 'base64');
+    const userInfo: InfoFromToken = getInfoFromToken(token);
     console.log('jwt infos::', userInfo);
     // const refreshToken = result.grantType + ' ' + result.refreshToken;
     const refreshToken = result.refreshToken;

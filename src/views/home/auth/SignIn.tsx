@@ -5,7 +5,7 @@ import { useTranslation } from 'react-i18next'
 import { useDispatch, useSelector } from "react-redux";
 import { RootState } from '../../../redux';
 import { signInAsyncAction, SIGN_IN_ACTION } from '../../../redux/reducers/app-reducer';
-import { authorizedApi } from '../../../logics/auth';
+import { authorizedApi, refreshTokens } from '../../../logics/auth';
 
 function SignInContent() {
     const { t } = useTranslation(['page'])
@@ -129,7 +129,7 @@ function SignInContent() {
                                     {loginBtnText}
                                 </Button>
 
-                                <Button
+                                {/* <Button
                                     type="button"
                                     variant="contained"
                                     color="primary"
@@ -138,6 +138,15 @@ function SignInContent() {
                                 >
                                     {"test"}
                                 </Button>
+                                <Button
+                                    type="button"
+                                    variant="contained"
+                                    color="primary"
+                                    onClick={() => { refreshTokens() }}
+                                    className={`${classes.signIn_Btn} ${classes.width100P}`}
+                                >
+                                    {"test"}
+                                </Button> */}
                             </form>
                         </div>
                     </div>
