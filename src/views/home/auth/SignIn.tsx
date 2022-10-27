@@ -5,6 +5,7 @@ import { useTranslation } from 'react-i18next'
 import { useDispatch, useSelector } from "react-redux";
 import { RootState } from '../../../redux';
 import { signInAsyncAction, SIGN_IN_ACTION } from '../../../redux/reducers/app-reducer';
+import { authorizedApi } from '../../../logics/auth';
 
 function SignInContent() {
     const { t } = useTranslation(['page'])
@@ -79,7 +80,7 @@ function SignInContent() {
                         </Typography>
                         <div className={`${classes.marginTop3} ${classes.width100P} ${classes.alignCenterBasic}`}>
                             {/* <form onSubmit={(e) => onSubmit(e, () => { dispatch({ type: SIGN_IN_ACTION, payload: { userId, password:userPass } }); setUserId(''); setUserPass(''); })}> */}
-                            <form onSubmit={(e) => onSubmit(e, () => { dispatch(signInAsyncAction.request({ userId, password:userPass })); setUserId(''); setUserPass(''); })}>
+                            <form onSubmit={(e) => onSubmit(e, () => { dispatch(signInAsyncAction.request({ userId, password: userPass })); setUserId(''); setUserPass(''); })}>
                                 <TextField
                                     autoFocus
                                     required
@@ -126,6 +127,16 @@ function SignInContent() {
                                     className={`${classes.signIn_Btn} ${classes.width100P}`}
                                 >
                                     {loginBtnText}
+                                </Button>
+
+                                <Button
+                                    type="button"
+                                    variant="contained"
+                                    color="primary"
+                                    onClick={() => { authorizedApi("rest/test/post") }}
+                                    className={`${classes.signIn_Btn} ${classes.width100P}`}
+                                >
+                                    {"test"}
                                 </Button>
                             </form>
                         </div>
